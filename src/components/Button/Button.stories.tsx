@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/react';
+import type { Meta } from '@storybook/react-vite';
 import ButtonComponent from './Button';
 import { ReactNode } from 'react';
 

@@ -15,6 +15,7 @@ A reference project that shows how test-driven development is done in a real ind
 - `docs/architecture/overview.md`: the target architecture and layer rules.
 - `docs/architecture/adr/`: decision records. Write a new ADR, using the template in its README, whenever you make a significant or hard-to-reverse technical decision. Never edit an accepted ADR; supersede it instead. ADR-0009 (feature-based folders) is **Proposed**. Until it's accepted, keep the current folder structure.
 - `docs/engineering/testing-strategy.md`: what to test at which level, the mocking policy, the snapshot policy, coverage, and CI gates. It's the detailed version of the testing section below.
+- `docs/engineering/dependencies.md`: packages held back below their latest version or pinned exactly, with the reasons.
 
 The project is MIT-licensed (`LICENSE`).
 
@@ -196,7 +197,7 @@ Button/
 
 ## Current state (as of 2026-10)
 The project is early-stage scaffolding:
-- All libraries were upgraded to their latest versions in TDD-42, **except TypeScript**, which stays on 6.0 because typescript-eslint doesn't support TypeScript 7 yet (its peer range is `<6.1`). Move to TypeScript 7 once typescript-eslint supports it.
+- All libraries were upgraded to their latest versions in TDD-42, **except TypeScript**, which stays on 6.0 because typescript-eslint doesn't support TypeScript 7 yet (its peer range is `<6.1`). TDD-43 tracks the move to 7. Held-back and pinned packages, and why, are listed in `docs/engineering/dependencies.md`. Keep it up to date when you hold back or pin a package.
 - `npm run lint` and `npx vitest run` **fail on `main`** for reasons unrelated to tooling: lint reports 4 errors in old scaffolding (`cypress.config.ts`, `Content.tsx`, `test-utils.tsx`), and the 4 test files contain no active tests. These get fixed as the old code is replaced and TDD-26 adds the CI gate.
 - Redux / Redux Toolkit / react-redux are **not installed yet**.
 - Cypress is configured (`cypress.config.ts`) but **not in `package.json`**. The sample spec points at `localhost:3000`, but Vite serves on `5173`.

@@ -11,7 +11,7 @@ Thanks for your interest in the TDD Todo App! This project is a reference for ho
 
 ## Local setup
 
-**Prerequisites:** Node.js 20 or later, and npm.
+**Prerequisites:** Node.js 24 LTS (the version in `.nvmrc`; run `nvm use`), and npm. Node 22.22 or later also works.
 
 ```bash
 git clone https://github.com/madhusankadilan/tdd-react-redux-todo-app.git

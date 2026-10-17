@@ -22,7 +22,7 @@ flowchart LR
 
 | Concern | Choice | ADR |
 |---|---|---|
-| UI | React 18 + TypeScript (strict) | — |
+| UI | React 19 + TypeScript (strict) | — |
 | Build / dev server | Vite | — |
 | State | Redux Toolkit + react-redux | [0003](adr/0003-redux-toolkit-for-state.md) |
 | Unit, component, integration tests | Vitest + React Testing Library + user-event | [0004](adr/0004-vitest-and-testing-library.md) |

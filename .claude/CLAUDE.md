@@ -4,7 +4,8 @@
 
 A reference project that shows how test-driven development is done in a real industry codebase. The feature set is deliberately simple (a todo app), so the focus stays on engineering practice: testing at every level, clean architecture and tooling.
 
-- **Stack:** React 18, Redux (Redux Toolkit), TypeScript, Vite. *(React and all libraries are going to be upgraded to their latest versions; see "Current state".)*
+- **Stack:** React 19, Redux (Redux Toolkit), TypeScript 6, Vite 8.
+- **Tooling:** Vitest 5 + React Testing Library 16, Storybook 10, ESLint 10 with a flat config (`eslint.config.js`), Prettier 3. Node.js 24 LTS (see `.nvmrc`); `package.json` `engines` lists the supported range.
 - **Frontend only.** There is no backend. **Redux is the single source of truth** for state while the app runs, and the tasks state is **persisted to localStorage** through a persistence adapter (`lib/persistence`), which saves on change and loads on startup. See ADR-0002 and `docs/architecture/overview.md`.
 
 **Product requirements** live in `docs/product/PRD.md`: user stories (US-n), functional requirements (FR-n), non-functional requirements, the data model and open questions. It's the source of truth for *what* to build. Use its acceptance criteria as the basis for tests, reference the US/FR ids in issues and PRs, and update the PRD (with a changelog entry) when scope changes. Keep business and product documents in `docs/product/`, not in code folders.
@@ -195,11 +196,12 @@ Button/
 
 ## Current state (as of 2026-10)
 The project is early-stage scaffolding:
-- **Planned upgrade:** React and **all libraries** (Vite, Vitest, Storybook, TypeScript, ESLint, Testing Library, etc.) will be upgraded to their latest versions. **After the upgrade, update this file:** the Stack line, the Commands section, any version-specific notes and config file names (e.g. ESLint flat config), and this "Current state" list. Also check the testing strategy, CONTRIBUTING (Node version) and the ADRs for outdated version details.
+- All libraries were upgraded to their latest versions in TDD-42, **except TypeScript**, which stays on 6.0 because typescript-eslint doesn't support TypeScript 7 yet (its peer range is `<6.1`). Move to TypeScript 7 once typescript-eslint supports it.
+- `npm run lint` and `npx vitest run` **fail on `main`** for reasons unrelated to tooling: lint reports 4 errors in old scaffolding (`cypress.config.ts`, `Content.tsx`, `test-utils.tsx`), and the 4 test files contain no active tests. These get fixed as the old code is replaced and TDD-26 adds the CI gate.
 - Redux / Redux Toolkit / react-redux are **not installed yet**.
 - Cypress is configured (`cypress.config.ts`) but **not in `package.json`**. The sample spec points at `localhost:3000`, but Vite serves on `5173`.
 - `Button.test.tsx` is empty. `SideBar.test.tsx` is fully commented out.
 - `Input` and `Textarea` only have `index.ts` stubs.
-- The design system is designed in Penpot but not built in code yet. Components live in `src/components/`. `Button/styles.css` hard-codes the old MUI-like palette (primary/secondary/success/info/warning/error × contained/outlined/text), which no longer matches the design. It gets replaced by the Option B Button variants and tokens. The Button story is titled `Example/Button`, and Storybook still has the onboarding addon from the template.
+- The design system is designed in Penpot but not built in code yet. Components live in `src/components/`. `Button/styles.css` hard-codes the old MUI-like palette (primary/secondary/success/info/warning/error × contained/outlined/text), which no longer matches the design. It gets replaced by the Option B Button variants and tokens. The Button story is titled `Example/Button`.
 - The existing containers (`home/SideBar`, `Content`, `Status`, `Item`) follow the old kanban layout and will be replaced by the Option B list + drawer layout.
 - **There is no CI right now.** The old AWS ECR/ECS deploy workflow and its task definition were removed, because the task definition contained AWS account details. TDD-26 adds a CI quality gate (lint, type-check, tests). Deployment will be decided later. A `Dockerfile` with nginx config (`docker/nginx`) still exists for building a static image.

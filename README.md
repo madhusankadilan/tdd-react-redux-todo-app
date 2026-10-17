@@ -15,6 +15,7 @@ What the app does and why is defined in the **[Product Requirements Document](do
 | [Architecture overview](docs/architecture/overview.md) | Layers, data flow, state shape, persistence, testability seams |
 | [Architecture Decision Records](docs/architecture/adr/) | Why each major technical choice was made |
 | [Testing strategy](docs/engineering/testing-strategy.md) | Test levels, TDD workflow, mocking and snapshot policy, coverage, CI gates |
+| [Dependencies](docs/engineering/dependencies.md) | Packages held back or pinned to an exact version, and why |
 | [Contributing](CONTRIBUTING.md) | Setup, workflow, branch and commit rules, PR checklist |
 
 ## License

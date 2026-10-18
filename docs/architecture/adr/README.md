@@ -13,6 +13,7 @@ An ADR records one significant decision: the context, what was decided, and the 
 | [0007](0007-penpot-as-design-tool.md) | Penpot as the design tool | Accepted |
 | [0008](0008-list-and-drawer-ux.md) | Single list + details drawer UX (Option B) | Accepted |
 | [0009](0009-feature-based-folder-structure.md) | Feature-based folder structure | Proposed |
+| [0010](0010-prettier-alongside-eslint.md) | Prettier for formatting, alongside ESLint | Accepted |
 
 ## When to write an ADR
 

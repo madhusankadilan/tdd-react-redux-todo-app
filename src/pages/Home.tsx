@@ -4,11 +4,11 @@
 import Button from "../components/Button";
 
 export default function Home() {
-    return (
-        <main className="home">
-            {/* <ToDoSideBar />
+   return (
+      <main className="home">
+         {/* <ToDoSideBar />
             <ToDoContent /> */}
-            <Button>Button</Button>
-        </main>
-    );
+         <Button>Button</Button>
+      </main>
+   );
 }

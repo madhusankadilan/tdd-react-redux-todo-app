@@ -1,93 +1,93 @@
 .sidebar {
-    min-width: 300px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
+   min-width: 300px;
+   background-color: white;
+   display: flex;
+   flex-direction: column;
 }
 
 .sidebar-header {
 }
 
 .sidebar-title {
-    font-family: "Karla";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 48px;
-    line-height: 56px;
-    text-align: center;
-    color: #000000;
+   font-family: "Karla";
+   font-style: normal;
+   font-weight: 400;
+   font-size: 48px;
+   line-height: 56px;
+   text-align: center;
+   color: #000000;
 }
 
 .sidebar-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+   flex-grow: 1;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
 }
 
 .form-group-title {
-    width: 330px;
-    height: 52px;
-    margin-top: 5vh;
+   width: 330px;
+   height: 52px;
+   margin-top: 5vh;
 }
 
 .title {
-    background: #f2f4f7;
-    border: 1px solid #293073;
-    border-radius: 5px;
-    width: 100%;
-    height: 100%;
-    font-family: "Karla";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 34px;
-    line-height: 40px;
-    color: #89898a;
-    text-align: center;
+   background: #f2f4f7;
+   border: 1px solid #293073;
+   border-radius: 5px;
+   width: 100%;
+   height: 100%;
+   font-family: "Karla";
+   font-style: normal;
+   font-weight: 400;
+   font-size: 34px;
+   line-height: 40px;
+   color: #89898a;
+   text-align: center;
 }
 
 .form-group-description {
-    width: 330px;
-    height: 241px;
-    margin-top: 10vh;
+   width: 330px;
+   height: 241px;
+   margin-top: 10vh;
 }
 
 .description {
-    background: #f2f4f7;
-    border: 1px solid #293073;
-    border-radius: 5px;
-    width: 100%;
-    height: 100%;
-    font-family: "Karla";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 34px;
-    line-height: 40px;
-    color: #89898a;
-    text-align: center;
+   background: #f2f4f7;
+   border: 1px solid #293073;
+   border-radius: 5px;
+   width: 100%;
+   height: 100%;
+   font-family: "Karla";
+   font-style: normal;
+   font-weight: 400;
+   font-size: 34px;
+   line-height: 40px;
+   color: #89898a;
+   text-align: center;
 }
 
 .form-group-add-btn {
-    width: 330px;
-    height: 54px;
-    margin-top: 10vh;
+   width: 330px;
+   height: 54px;
+   margin-top: 10vh;
 }
 
 .add-btn {
-    background: #2d9f2b;
-    border: 1px solid #10420c;
-    border-radius: 5px;
-    width: 100%;
-    height: 100%;
-    font-family: "Karla";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 30px;
-    line-height: 35px;
-    color: #ffffff;
-    cursor: pointer;
+   background: #2d9f2b;
+   border: 1px solid #10420c;
+   border-radius: 5px;
+   width: 100%;
+   height: 100%;
+   font-family: "Karla";
+   font-style: normal;
+   font-weight: 400;
+   font-size: 30px;
+   line-height: 35px;
+   color: #ffffff;
+   cursor: pointer;
 }
 
 .disabled {
-    cursor: not-allowed;
+   cursor: not-allowed;
 }

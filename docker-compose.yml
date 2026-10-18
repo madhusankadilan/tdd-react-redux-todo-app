@@ -1,9 +1,9 @@
-version: '3'
+version: "3"
 services:
-  test-react-app:
-    image: test-service
-    build: cra
-    ports:
-      - 8081:3000
-      
+   test-react-app:
+      image: test-service
+      build: cra
+      ports:
+         - 8081:3000
+
 # docker-compose up

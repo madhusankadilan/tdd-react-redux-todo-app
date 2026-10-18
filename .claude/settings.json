@@ -1,47 +1,47 @@
 {
-  "permissions": {
-    "deny": [
-      "Bash(gh repo delete *)",
-      "Bash(gh repo archive *)",
-      "Bash(gh repo rename *)",
-      "Bash(gh repo transfer *)",
-      "Bash(gh project delete *)",
-      "Bash(gh project item-delete *)",
-      "Bash(gh project field-delete *)",
-      "Bash(gh issue delete *)",
-      "Bash(gh issue transfer *)",
-      "Bash(gh label delete *)",
-      "Bash(gh release delete *)",
-      "Bash(gh secret delete *)",
-      "Bash(gh variable delete *)",
-      "Bash(gh run delete *)",
-      "Bash(gh cache delete *)",
-      "Bash(gh pr merge *)",
-      "Bash(git push --force *)",
-      "Bash(git push -f *)",
-      "Bash(git push origin main)",
-      "Bash(git push origin --delete *)",
-      "Bash(git branch -D *)",
-      "Bash(git reset --hard *)",
-      "Bash(git clean *)",
-      "Bash(git stash drop *)",
-      "Bash(git stash clear)",
-      "Bash(sudo *)"
-    ]
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-destructive-commands.py\"",
-            "timeout": 10,
-            "onFailure": "block"
-          }
-        ]
-      }
-    ]
-  }
+   "permissions": {
+      "deny": [
+         "Bash(gh repo delete *)",
+         "Bash(gh repo archive *)",
+         "Bash(gh repo rename *)",
+         "Bash(gh repo transfer *)",
+         "Bash(gh project delete *)",
+         "Bash(gh project item-delete *)",
+         "Bash(gh project field-delete *)",
+         "Bash(gh issue delete *)",
+         "Bash(gh issue transfer *)",
+         "Bash(gh label delete *)",
+         "Bash(gh release delete *)",
+         "Bash(gh secret delete *)",
+         "Bash(gh variable delete *)",
+         "Bash(gh run delete *)",
+         "Bash(gh cache delete *)",
+         "Bash(gh pr merge *)",
+         "Bash(git push --force *)",
+         "Bash(git push -f *)",
+         "Bash(git push origin main)",
+         "Bash(git push origin --delete *)",
+         "Bash(git branch -D *)",
+         "Bash(git reset --hard *)",
+         "Bash(git clean *)",
+         "Bash(git stash drop *)",
+         "Bash(git stash clear)",
+         "Bash(sudo *)"
+      ]
+   },
+   "hooks": {
+      "PreToolUse": [
+         {
+            "matcher": "Bash",
+            "hooks": [
+               {
+                  "type": "command",
+                  "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-destructive-commands.py\"",
+                  "timeout": 10,
+                  "onFailure": "block"
+               }
+            ]
+         }
+      ]
+   }
 }

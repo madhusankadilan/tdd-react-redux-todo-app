@@ -113,7 +113,7 @@ A PR can only merge when all of these pass. The workflow is `.github/workflows/c
 |---|---|---|
 | Formatting | `npm run format:check` | ✅ In CI |
 | Lint (zero warnings) | `npm run lint` | ✅ In CI |
-| Type-check | `tsc --noEmit` | ✅ In CI |
+| Type-check (app and config code) | `tsc -b` | ✅ In CI |
 | Unit + component + integration tests with coverage | `npm run coverage` (`vitest run --coverage`) | ✅ In CI (thresholds come with TDD-19) |
 | Production build | `npm run build` | ✅ In CI |
 | Storybook build + interaction tests | `build-storybook` + test runner | Planned (TDD-29) |

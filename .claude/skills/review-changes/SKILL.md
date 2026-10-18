@@ -88,7 +88,7 @@ Read the project rules first: `.claude/CLAUDE.md`, `docs/engineering/testing-str
   - The design system never imports app code or the store.
   - No hard-coded colors, sizes or shadows in component CSS. Look for hex colors, `px` values or `rgba(` outside the token files.
   - New components have stories covering every variant.
-- **Folder structure** matches CLAUDE.md, or ADR-0009 once it's accepted.
+- **Folder structure** matches CLAUDE.md and ADR-0009: Redux setup goes in `store/`, and feature code (slices, selectors, feature components) in `features/<name>/`, not in the old `containers/`.
 - **Accessibility:** semantic elements, labels, keyboard support, focus management, roles for dialogs and alerts.
 - **General quality:** dead code, leftover `console.log`, commented-out code, TODOs without an issue, duplication, unclear names.
 

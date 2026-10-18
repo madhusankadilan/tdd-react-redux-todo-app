@@ -37,20 +37,23 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  App["app/<br/>store, providers, App shell"] --> Features
+  Shell["App.tsx, main.tsx<br/>App shell, entry point"] --> Store
+  Shell --> Features
+  Store["store/<br/>store setup, typed hooks"] --> Features
   Features["features/<br/>tasks, notifications"] --> DS["design-system/<br/>tokens + components"]
   Features --> Lib["lib/<br/>persistence, clock, id"]
-  App --> Lib
+  Store --> Lib
 ```
 
 | Layer | Contains | May import from | Must not import from |
 |---|---|---|---|
-| `app/` | Store setup, typed hooks, providers, App shell and layout | `features/`, `design-system/`, `lib/` | — |
-| `features/<name>/` | A slice, selectors, feature components (containers) and tests for one feature | `design-system/`, `lib/`, `app/hooks` | Other features' internals (use their public `index.ts`) |
-| `design-system/` | Tokens, presentational components, stories | Nothing in the app | `app/`, `features/`, `lib/`, the Redux store |
+| `App.tsx`, `main.tsx` (`src/` root) | App shell and layout; the entry point creates the store and renders `<Provider>` | `store/`, `features/`, `design-system/` | — |
+| `store/` | Store setup, `RootState` / `AppDispatch` types, typed hooks | Feature reducers, `lib/` | Feature components |
+| `features/<name>/` | A slice, selectors, feature components (containers) and tests for one feature | `design-system/`, `lib/`, `store/` (typed hooks and types only) | Other features' internals (use their public `index.ts`) |
+| `design-system/` | Tokens, presentational components, stories | Nothing in the app | `store/`, `features/`, `lib/` |
 | `lib/` | Framework-free helpers: the persistence adapter, clock, id generator | — | React, Redux, features |
 
-These rules are enforced with ESLint `no-restricted-imports`, so a boundary violation fails lint.
+These rules are checked in code review for now. The plan is to enforce them with ESLint `no-restricted-imports`, so a boundary violation fails lint.
 
 ## 4. Data flow
 
@@ -133,13 +136,14 @@ These are the points where tests replace real dependencies, to keep every test d
 
 ```
 src/
-  app/                  # store.ts, hooks.ts, App.tsx, providers
+  store/                # store.ts, hooks.ts, index.ts
   design-system/        # tokens/, foundations/, components/, index.ts
   features/
     tasks/              # tasksSlice.ts, selectors.ts, components/ (TaskList, AddTask, TaskDrawer…), index.ts
     notifications/      # notificationsSlice.ts, Snackbars.tsx, index.ts
   lib/                  # persistence/, clock.ts, id.ts
   test/                 # test-utils (renderWithProviders, fakes, builders)
+  App.tsx
   main.tsx
 ```
 
@@ -147,9 +151,9 @@ src/
 
 | Area | Today | Target |
 |---|---|---|
-| State | No Redux yet | Redux Toolkit store with `tasks` and `notifications` slices (TDD-16, TDD-22) |
-| Folders | `components/`, `containers/`, `pages/` (kanban layout) | `app/`, `features/`, `design-system/`, `lib/` ([ADR-0009](adr/0009-feature-based-folder-structure.md)) |
+| State | Redux Toolkit store with a `tasks` slice (`taskAdded` only) and typed hooks; a single store, `setupStore()` still to come (TDD-49) | Redux Toolkit store with `tasks` and `notifications` slices (TDD-49, TDD-22) |
+| Folders | New code in `store/` and `features/tasks/`; the old `components/`, `containers/`, `pages/` (kanban layout) remain | `store/`, `features/`, `design-system/`, `lib/` ([ADR-0009](adr/0009-feature-based-folder-structure.md)) |
 | Components | Button with the old MUI-like palette in `src/components/` | Option B components in `src/design-system/` (TDD-30, TDD-31) |
 | Persistence | None | `lib/persistence` adapter (TDD-25) |
 | E2E | Cypress config only, not installed | Cypress installed and running in CI (TDD-18, TDD-27) |
-| CI | Removed | Lint, typecheck, tests and coverage as a required check (TDD-26) |
+| CI | Format, lint, type-check, tests with coverage and build on every PR (TDD-26) | Plus coverage thresholds (TDD-19), Storybook (TDD-29) and E2E (TDD-27) |

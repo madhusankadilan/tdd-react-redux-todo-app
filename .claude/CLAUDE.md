@@ -13,7 +13,7 @@ A reference project that shows how test-driven development is done in a real ind
 **Other key docs:**
 - `CONTRIBUTING.md`: the human-facing workflow. Keep it in sync with the git workflow below.
 - `docs/architecture/overview.md`: the target architecture and layer rules.
-- `docs/architecture/adr/`: decision records. Write a new ADR, using the template in its README, whenever you make a significant or hard-to-reverse technical decision. Never edit an accepted ADR; supersede it instead. ADR-0009 (feature-based folders) is **Proposed**. Until it's accepted, keep the current folder structure.
+- `docs/architecture/adr/`: decision records. Write a new ADR, using the template in its README, whenever you make a significant or hard-to-reverse technical decision. Never edit an accepted ADR; supersede it instead. ADR-0009 (feature-based folders) is **Accepted**: new code goes into `store/` and `features/`, while the old type-based folders are replaced during the Option B rebuild.
 - `docs/engineering/testing-strategy.md`: what to test at which level, the mocking policy, the snapshot policy, coverage, and CI gates. It's the detailed version of the testing section below.
 - `docs/engineering/dependencies.md`: packages held back below their latest version or pinned exactly, with the reasons.
 
@@ -68,7 +68,7 @@ The app is built on a small, separate design system: tokens and components that 
 - **Typography:** Plus Jakarta Sans (to be loaded in `.storybook/preview-head.html` and `index.html`; they currently load Roboto), with a defined type scale exposed as tokens: Page heading 30, Drawer heading 24, Task title 15/600, Body 15, Small 14, Caption 13, plus label styles.
 - **Shape:** buttons and pills are fully rounded (`radius.full`), cards and rows use `radius.md` (12px), and inner controls use `radius.sm` (8px).
 - **Boundaries:**
-  - Design system code never imports from `containers/`, `pages/`, or the Redux store, and has no business logic.
+  - Design system code never imports from `features/`, `containers/`, `pages/` or `store/`, and has no business logic.
   - App code imports design system pieces only through `src/design-system/index.ts`, never deep paths.
 - **Storybook structure:** `Foundations/*` (tokens docs), `Components/*` (one entry per component, `tags: ['autodocs']`), and optionally `Patterns/*` for compositions. Every component story covers all variants, sizes and states (hover, disabled, error, loading), and has `play` interaction tests where it's interactive.
 - **Definition of done for a design system component:** tests first (unit + a11y + small snapshot), a story covering every variant, typed props with JSDoc (so autodocs shows descriptions), token-only styling, keyboard-accessible, and exported from `index.ts`.
@@ -118,16 +118,20 @@ npm run storybook      # Storybook on :6006
 
 ## Project structure
 
-Current structure. `src/` will be reorganised by feature if ADR-0009 is accepted.
+Feature-based (ADR-0009). New code goes in `store/` and `features/`. The old `components/`, `containers/` and `pages/` folders stay until the Option B rebuild replaces them.
 ```
 src/
+  store/              # Redux store, RootState / AppDispatch types, typed hooks. index.ts re-exports them.
+  features/           # One folder per feature: slice, selectors, components, tests. Only tasks/ today.
   components/         # Button, Input, Textarea today. Moves to design-system/ in TDD-30.
-  containers/         # Feature-level components grouped by page (home/, login/). Old kanban layout, to be replaced.
-  pages/              # Route-level pages composed from containers.
+  containers/         # Old kanban layout (home/, login/). No longer rendered, to be replaced.
+  pages/              # Route-level pages composed from features (Home renders TaskList).
   utils/              # Helpers (getClassNames) and test-utils.
-  data.ts             # Domain types (ITask, IStatus, StatusList).
+  data.ts             # Old kanban domain types (ITask, IStatus, StatusList).
   setup.ts            # Vitest setup (jest-dom matchers).
+  App.tsx, main.tsx   # App shell; the entry point renders <Provider> and <App />.
   (design-system/)    # PLANNED, not created yet (TDD-30): tokens, foundations docs, components. No Redux, no app imports.
+  (lib/, test/)       # PLANNED (ADR-0009): persistence, clock and id helpers; shared test utilities.
 docs/
   product/            # Business and product documents (PRD), kept separate from code.
   architecture/       # overview.md (layers, data flow, state shape) + adr/ (Architecture Decision Records).
@@ -203,10 +207,10 @@ Button/
 The project is early-stage scaffolding:
 - All libraries were upgraded to their latest versions in TDD-42, **except TypeScript**, which stays on 6.0 because typescript-eslint doesn't support TypeScript 7 yet (its peer range is `<6.1`). TDD-43 tracks the move to 7. Held-back and pinned packages, and why, are listed in `docs/engineering/dependencies.md`. Keep it up to date when you hold back or pin a package.
 - `main` is green since TDD-45: format check, lint, type-check, tests and build all pass. CI (`.github/workflows/ci.yml`, job "Quality gate") runs them on every PR and push to `main` since TDD-26. Keep it green.
-- Redux / Redux Toolkit / react-redux are **not installed yet**.
+- Redux Toolkit and react-redux are installed (TDD-49). `src/store/` exports a single `store` with one `tasks` slice (`taskAdded`, `selectTasks`), used by `features/tasks/TaskList` on the Home page. `setupStore()` and `renderWithProviders` are still to come, and the Redux code has no tests yet.
 - Cypress is configured (`cypress.config.ts`) but **not in `package.json`**. The sample spec points at `localhost:3000`, but Vite serves on `5173`.
 - The only tests are the `getClassNames` unit tests (`src/utils/components/css.test.ts`). The old empty and commented-out test files were removed in TDD-45. Components have no tests yet; Button gets them in TDD-7.
 - `Input` and `Textarea` only have `index.ts` stubs.
 - The design system is designed in Penpot but not built in code yet. Components live in `src/components/`. `Button/styles.css` hard-codes the old MUI-like palette (primary/secondary/success/info/warning/error × contained/outlined/text), which no longer matches the design. It gets replaced by the Option B Button variants and tokens. The Button story is titled `Example/Button`.
-- The existing containers (`home/SideBar`, `Content`, `Status`, `Item`) follow the old kanban layout and will be replaced by the Option B list + drawer layout.
+- The existing containers (`home/SideBar`, `Content`, `Status`, `Item`) follow the old kanban layout. They're no longer rendered, and will be replaced by the Option B list + drawer layout.
 - **CI has no deploy step.** The old AWS ECR/ECS deploy workflow and its task definition were removed in TDD-39, because the task definition contained AWS account details. Deployment will be decided later. Storybook, E2E and visual-regression gates are added by their own tasks (TDD-27, TDD-29, TDD-34). A `Dockerfile` with nginx config (`docker/nginx`) still exists for building a static image.

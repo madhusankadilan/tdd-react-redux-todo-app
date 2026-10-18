@@ -107,6 +107,8 @@ The app is built on a small, separate design system: tokens and components that 
 npm run dev            # Vite dev server
 npm run build          # tsc + vite build
 npm run lint           # ESLint (max-warnings 0)
+npm run format         # Prettier: format all code and config (not Markdown)
+npm run format:check   # Prettier: fail on unformatted files (runs in CI)
 npm test               # Vitest (watch mode)
 npx vitest run         # Vitest single run
 npm run coverage       # Vitest with coverage
@@ -151,7 +153,7 @@ Button/
 - TypeScript strict mode. Avoid `any`, and type props with a `Props` type.
 - Functional components only. Destructure props with defaults.
 - CSS classes are built with `getClassNames(base, modifiers, custom)`, which produces BEM-like `dc-<base>` / `dc-<base>-<modifier>` names. Use plain CSS files per component.
-- Prettier: `tabWidth: 3`.
+- Prettier: `tabWidth: 3`. It formats code and config, not Markdown (ADR-0010). Run `npm run format` before committing; CI fails on unformatted files.
 - Redux: Redux Toolkit (`createSlice`, `configureStore`), typed hooks (`useAppDispatch`, `useAppSelector`), and memoized selectors. Keep slices in a feature folder alongside their tests.
 
 ## Working with Claude
@@ -198,11 +200,11 @@ Button/
 ## Current state (as of 2026-10)
 The project is early-stage scaffolding:
 - All libraries were upgraded to their latest versions in TDD-42, **except TypeScript**, which stays on 6.0 because typescript-eslint doesn't support TypeScript 7 yet (its peer range is `<6.1`). TDD-43 tracks the move to 7. Held-back and pinned packages, and why, are listed in `docs/engineering/dependencies.md`. Keep it up to date when you hold back or pin a package.
-- `main` is green since TDD-45: lint, type-check, tests and build all pass. Keep it that way. TDD-26 adds the CI gate that enforces it.
+- `main` is green since TDD-45: format check, lint, type-check, tests and build all pass. CI (`.github/workflows/ci.yml`, job "Quality gate") runs them on every PR and push to `main` since TDD-26. Keep it green.
 - Redux / Redux Toolkit / react-redux are **not installed yet**.
 - Cypress is configured (`cypress.config.ts`) but **not in `package.json`**. The sample spec points at `localhost:3000`, but Vite serves on `5173`.
 - The only tests are the `getClassNames` unit tests (`src/utils/components/css.test.ts`). The old empty and commented-out test files were removed in TDD-45. Components have no tests yet; Button gets them in TDD-7.
 - `Input` and `Textarea` only have `index.ts` stubs.
 - The design system is designed in Penpot but not built in code yet. Components live in `src/components/`. `Button/styles.css` hard-codes the old MUI-like palette (primary/secondary/success/info/warning/error × contained/outlined/text), which no longer matches the design. It gets replaced by the Option B Button variants and tokens. The Button story is titled `Example/Button`.
 - The existing containers (`home/SideBar`, `Content`, `Status`, `Item`) follow the old kanban layout and will be replaced by the Option B list + drawer layout.
-- **There is no CI right now.** The old AWS ECR/ECS deploy workflow and its task definition were removed, because the task definition contained AWS account details. TDD-26 adds a CI quality gate (lint, type-check, tests). Deployment will be decided later. A `Dockerfile` with nginx config (`docker/nginx`) still exists for building a static image.
+- **CI has no deploy step.** The old AWS ECR/ECS deploy workflow and its task definition were removed in TDD-39, because the task definition contained AWS account details. Deployment will be decided later. Storybook, E2E and visual-regression gates are added by their own tasks (TDD-27, TDD-29, TDD-34). A `Dockerfile` with nginx config (`docker/nginx`) still exists for building a static image.

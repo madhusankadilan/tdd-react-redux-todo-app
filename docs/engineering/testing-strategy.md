@@ -107,16 +107,18 @@ All mocks go through the seams in the [architecture overview](../architecture/ov
 
 ## 8. CI gates
 
-A PR can only merge when all of these pass:
+A PR can only merge when all of these pass. The workflow is `.github/workflows/ci.yml` (job "Quality gate"); branch protection on `main` requires it.
 
-| Gate | Command |
-|---|---|
-| Lint (zero warnings) | `npm run lint` |
-| Type-check | `tsc --noEmit` |
-| Unit + component + integration tests with coverage | `vitest run --coverage` |
-| Storybook build + interaction tests | `build-storybook` + test runner |
-| E2E against the production build | Cypress (headless) |
-| Visual regression (design system) | Chromatic / screenshot diff |
+| Gate | Command | Status |
+|---|---|---|
+| Formatting | `npm run format:check` | ✅ In CI |
+| Lint (zero warnings) | `npm run lint` | ✅ In CI |
+| Type-check | `tsc --noEmit` | ✅ In CI |
+| Unit + component + integration tests with coverage | `npm run coverage` (`vitest run --coverage`) | ✅ In CI (thresholds come with TDD-19) |
+| Production build | `npm run build` | ✅ In CI |
+| Storybook build + interaction tests | `build-storybook` + test runner | Planned (TDD-29) |
+| E2E against the production build | Cypress (headless) | Planned (TDD-27) |
+| Visual regression (design system) | Chromatic / screenshot diff | Planned (TDD-34) |
 
 ## 9. Flaky tests
 

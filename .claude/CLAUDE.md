@@ -198,10 +198,10 @@ Button/
 ## Current state (as of 2026-10)
 The project is early-stage scaffolding:
 - All libraries were upgraded to their latest versions in TDD-42, **except TypeScript**, which stays on 6.0 because typescript-eslint doesn't support TypeScript 7 yet (its peer range is `<6.1`). TDD-43 tracks the move to 7. Held-back and pinned packages, and why, are listed in `docs/engineering/dependencies.md`. Keep it up to date when you hold back or pin a package.
-- `npm run lint` and `npx vitest run` **fail on `main`** for reasons unrelated to tooling: lint reports 4 errors in old scaffolding (`cypress.config.ts`, `Content.tsx`, `test-utils.tsx`), and the 4 test files contain no active tests. These get fixed as the old code is replaced and TDD-26 adds the CI gate.
+- `main` is green since TDD-45: lint, type-check, tests and build all pass. Keep it that way. TDD-26 adds the CI gate that enforces it.
 - Redux / Redux Toolkit / react-redux are **not installed yet**.
 - Cypress is configured (`cypress.config.ts`) but **not in `package.json`**. The sample spec points at `localhost:3000`, but Vite serves on `5173`.
-- `Button.test.tsx` is empty. `SideBar.test.tsx` is fully commented out.
+- The only tests are the `getClassNames` unit tests (`src/utils/components/css.test.ts`). The old empty and commented-out test files were removed in TDD-45. Components have no tests yet; Button gets them in TDD-7.
 - `Input` and `Textarea` only have `index.ts` stubs.
 - The design system is designed in Penpot but not built in code yet. Components live in `src/components/`. `Button/styles.css` hard-codes the old MUI-like palette (primary/secondary/success/info/warning/error × contained/outlined/text), which no longer matches the design. It gets replaced by the Option B Button variants and tokens. The Button story is titled `Example/Button`.
 - The existing containers (`home/SideBar`, `Content`, `Status`, `Item`) follow the old kanban layout and will be replaced by the Option B list + drawer layout.

@@ -27,6 +27,8 @@ npm run dev        # http://localhost:5173
 | `npx vitest run` | Run all unit, component and integration tests once |
 | `npm run coverage` | Tests with a coverage report (thresholds are enforced) |
 | `npm run lint` | ESLint, zero warnings allowed |
+| `npm run format` | Format all code and config with Prettier |
+| `npm run format:check` | Check formatting without changing files (CI runs this) |
 | `npm run build` | Type-check and production build |
 | `npm run storybook` | Storybook at http://localhost:6006 |
 
@@ -78,7 +80,7 @@ Examples:
 
 ### PR checklist
 - [ ] Tests were written first and cover the acceptance criteria
-- [ ] `npx vitest run`, `npm run lint` and `npm run build` pass locally
+- [ ] `npm run format:check`, `npm run lint`, `npx vitest run` and `npm run build` pass locally (CI runs the same checks and must be green)
 - [ ] Coverage thresholds still pass (`npm run coverage`)
 - [ ] UI uses only design-system components and tokens, with no hard-coded colors or sizes
 - [ ] New or changed components have Storybook stories covering every variant and state
@@ -92,7 +94,7 @@ Examples:
 - **React:** function components only. Keep business logic in Redux slices and selectors, not in components.
 - **State:** Redux Toolkit (`createSlice`, typed `useAppDispatch` / `useAppSelector`, memoized selectors).
 - **Design system:** app code imports from `src/design-system` only through its `index.ts`. The design system never imports app code.
-- **Formatting:** Prettier (tab width 3). Linting: ESLint with zero warnings.
+- **Formatting:** Prettier (tab width 3) for code and config; Markdown docs are hand-formatted ([ADR-0010](docs/architecture/adr/0010-prettier-alongside-eslint.md)). Linting: ESLint with zero warnings.
 - **Test data:** use obviously fake data (`jane@example.com`, "Jane"). Never use real personal data.
 
 ## Documentation

@@ -4,7 +4,7 @@ import Status from "../Status/index.ts";
 import "./styles.css";
 
 type Props = {
-	status: any;
+	status: StatusList;
 };
 
 const Content = ({ status }: Props) => {

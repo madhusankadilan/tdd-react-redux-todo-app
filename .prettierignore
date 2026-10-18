@@ -1,3 +1,19 @@
-# Ignore artifacts:
+# Generated output
+dist
 build
 coverage
+storybook-static
+
+# Lockfile (managed by npm)
+package-lock.json
+
+# Markdown docs are hand-written (see ADR-0010)
+*.md
+
+# Binary design source and exports
+docs/design/*.penpot
+docs/design/images
+
+# Claude Code: Penpot snippets aren't modules, and local settings stay untouched
+.claude/penpot
+.claude/settings.local.json

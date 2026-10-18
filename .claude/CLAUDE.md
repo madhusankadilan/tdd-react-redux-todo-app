@@ -105,7 +105,8 @@ The app is built on a small, separate design system: tokens and components that 
 
 ```bash
 npm run dev            # Vite dev server
-npm run build          # tsc + vite build
+npm run build          # tsc -b (type-check) + vite build
+npx tsc -b             # Type-check only: app and config code (runs in CI)
 npm run lint           # ESLint (max-warnings 0)
 npm run format         # Prettier: format all code and config (not Markdown)
 npm run format:check   # Prettier: fail on unformatted files (runs in CI)
@@ -151,6 +152,7 @@ Button/
 
 ## Code conventions
 - TypeScript strict mode. Avoid `any`, and type props with a `Props` type.
+- TypeScript configs: `tsconfig.json` only references `tsconfig.app.json` (browser code: `src/`, `.storybook/preview.ts`) and `tsconfig.node.json` (config that runs in Node: `vite.config.ts`, `.storybook/main.ts`). `tsc -b` checks both. When you add a TypeScript file outside `src/`, add it to the matching config, or it won't be type-checked.
 - Functional components only. Destructure props with defaults.
 - CSS classes are built with `getClassNames(base, modifiers, custom)`, which produces BEM-like `dc-<base>` / `dc-<base>-<modifier>` names. Use plain CSS files per component.
 - Prettier: `tabWidth: 3`. It formats code and config, not Markdown (ADR-0010). Run `npm run format` before committing; CI fails on unformatted files.

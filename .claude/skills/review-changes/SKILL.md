@@ -48,7 +48,7 @@ Run whatever is available, and report results honestly (failures included):
 
 ```bash
 npm run lint            # ESLint, zero warnings allowed
-npx tsc --noEmit        # type-check
+npx tsc -b              # type-check (app and config code)
 npx vitest run          # unit + component + integration tests
 ```
 

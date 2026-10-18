@@ -21,5 +21,12 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Test files and test utilities are never hot-reloaded
+    files: ['**/*.test.{ts,tsx}', 'src/utils/test-utils.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
   storybook.configs['flat/recommended'],
 ])

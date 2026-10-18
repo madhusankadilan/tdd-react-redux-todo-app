@@ -31,6 +31,7 @@ flowchart LR
 | Design tool | Penpot | [0007](adr/0007-penpot-as-design-tool.md) |
 | UX direction | Single list + details drawer (Option B) | [0008](adr/0008-list-and-drawer-ux.md) |
 | Code organisation | Feature-based folders | [0009](adr/0009-feature-based-folder-structure.md) |
+| Linting / formatting | ESLint (code quality) + Prettier (formatting), separate tools | [0010](adr/0010-prettier-alongside-eslint.md) |
 
 ## 3. Layers and dependency rules
 

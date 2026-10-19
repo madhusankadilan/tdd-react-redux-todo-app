@@ -92,7 +92,8 @@ Examples:
 
 - **TypeScript:** strict mode, no `any`. Type component props with a `Props` type.
 - **React:** function components only. Keep business logic in Redux slices and selectors, not in components.
-- **State:** Redux Toolkit (`createSlice`, typed `useAppDispatch` / `useAppSelector`, memoized selectors).
+- **State:** Redux Toolkit (`createSlice`, typed `useAppDispatch` / `useAppSelector` from `src/store/hooks.ts`, memoized selectors). In tests, render with `renderWithProviders(ui, { preloadedState })` from `src/utils/test-utils.tsx`, which gives every test a fresh store.
+- **Folders:** feature-based ([ADR-0009](docs/architecture/adr/0009-feature-based-folder-structure.md)). `src/store/` holds the store setup and typed hooks, and `src/features/<name>/` holds one feature's slice, selectors, components and tests, exposed through its `index.ts`. The old `components/`, `containers/` and `pages/` folders move over as the Option B screens are rebuilt.
 - **Design system:** app code imports from `src/design-system` only through its `index.ts`. The design system never imports app code.
 - **Formatting:** Prettier (tab width 3) for code and config; Markdown docs are hand-formatted ([ADR-0010](docs/architecture/adr/0010-prettier-alongside-eslint.md)). Linting: ESLint with zero warnings.
 - **Test data:** use obviously fake data (`jane@example.com`, "Jane"). Never use real personal data.

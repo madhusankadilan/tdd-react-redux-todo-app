@@ -77,7 +77,7 @@ flowchart LR
 - Use `const user = userEvent.setup()`, then `await user.type(...)` and `await user.click(...)`. Don't use `fireEvent`.
 
 **Rendering with state**
-- Use `renderWithProviders(ui, { preloadedState })` from `src/test/test-utils`. Each test gets a **fresh store**.
+- Use `renderWithProviders(ui, { preloadedState })` from `src/utils/test-utils.tsx`. Each test gets a **fresh store**.
 
 **Test data**
 - Use builders, e.g. `buildTask({ status: 'done' })`, so tests only state the fields that matter.

@@ -1,7 +1,7 @@
 # 0009. Feature-based folder structure
 
-- **Status:** Proposed
-- **Date:** 2026-10-15
+- **Status:** Accepted
+- **Date:** 2026-10-15 (accepted 2026-10-19, TDD-49)
 
 ## Context
 The current code is organised by type (`components/`, `containers/`, `pages/`), which came from the original kanban layout. As features grow, code for one feature (slice, selectors, components, tests) gets spread across many folders. The Redux Toolkit docs recommend grouping by feature.
@@ -11,14 +11,17 @@ Organise `src/` by feature:
 
 ```
 src/
-  app/             # store, typed hooks, providers, App shell
+  store/           # store setup (setupStore, RootState, AppDispatch), typed hooks
   design-system/   # tokens, components (ADR-0006)
   features/
     tasks/         # slice, selectors, components, tests, index.ts (public API)
     notifications/
   lib/             # framework-free helpers: persistence, clock, id
   test/            # shared test utilities, fakes, builders
+  App.tsx, main.tsx  # App shell and entry point (main.tsx wraps <App /> in the Redux <Provider>)
 ```
+
+The store folder is called `store/` rather than `app/`, so its name says what's in it and it isn't confused with the `App` component.
 
 Rules:
 - A feature exposes its public API through `index.ts`. Other features import only from there.

@@ -37,7 +37,7 @@ flowchart LR
 
 ```mermaid
 flowchart TD
-  App["app/<br/>store, providers, App shell"] --> Features
+  App["store/ + App shell<br/>store, typed hooks, Provider"] --> Features
   Features["features/<br/>tasks, notifications"] --> DS["design-system/<br/>tokens + components"]
   Features --> Lib["lib/<br/>persistence, clock, id"]
   App --> Lib
@@ -45,9 +45,9 @@ flowchart TD
 
 | Layer | Contains | May import from | Must not import from |
 |---|---|---|---|
-| `app/` | Store setup, typed hooks, providers, App shell and layout | `features/`, `design-system/`, `lib/` | — |
-| `features/<name>/` | A slice, selectors, feature components (containers) and tests for one feature | `design-system/`, `lib/`, `app/hooks` | Other features' internals (use their public `index.ts`) |
-| `design-system/` | Tokens, presentational components, stories | Nothing in the app | `app/`, `features/`, `lib/`, the Redux store |
+| `store/` + App shell | Store setup and typed hooks (`store/`); `App.tsx` and `main.tsx` (Provider, layout) | `features/`, `design-system/`, `lib/` | — |
+| `features/<name>/` | A slice, selectors, feature components (containers) and tests for one feature | `design-system/`, `lib/`, `store/hooks` | Other features' internals (use their public `index.ts`) |
+| `design-system/` | Tokens, presentational components, stories | Nothing in the app | `store/`, `features/`, `lib/`, the Redux store |
 | `lib/` | Framework-free helpers: the persistence adapter, clock, id generator | — | React, Redux, features |
 
 These rules are enforced with ESLint `no-restricted-imports`, so a boundary violation fails lint.
@@ -133,22 +133,23 @@ These are the points where tests replace real dependencies, to keep every test d
 
 ```
 src/
-  app/                  # store.ts, hooks.ts, App.tsx, providers
+  store/                # store.ts (setupStore, RootState, AppStore, AppDispatch), hooks.ts
   design-system/        # tokens/, foundations/, components/, index.ts
   features/
     tasks/              # tasksSlice.ts, selectors.ts, components/ (TaskList, AddTask, TaskDrawer…), index.ts
     notifications/      # notificationsSlice.ts, Snackbars.tsx, index.ts
   lib/                  # persistence/, clock.ts, id.ts
   test/                 # test-utils (renderWithProviders, fakes, builders)
-  main.tsx
+  App.tsx               # App shell
+  main.tsx              # entry point, wraps <App /> in the Redux <Provider>
 ```
 
 ## Current state vs target
 
 | Area | Today | Target |
 |---|---|---|
-| State | No Redux yet | Redux Toolkit store with `tasks` and `notifications` slices (TDD-16, TDD-22) |
-| Folders | `components/`, `containers/`, `pages/` (kanban layout) | `app/`, `features/`, `design-system/`, `lib/` ([ADR-0009](adr/0009-feature-based-folder-structure.md)) |
+| State | Store, typed hooks and an empty `tasks` slice (TDD-49) | Redux Toolkit store with `tasks` and `notifications` slices (TDD-22) |
+| Folders | `store/` and `features/tasks/` exist; the rest is still `components/`, `containers/`, `pages/` (kanban layout) | `store/`, `features/`, `design-system/`, `lib/` ([ADR-0009](adr/0009-feature-based-folder-structure.md)) |
 | Components | Button with the old MUI-like palette in `src/components/` | Option B components in `src/design-system/` (TDD-30, TDD-31) |
 | Persistence | None | `lib/persistence` adapter (TDD-25) |
 | E2E | Cypress config only, not installed | Cypress installed and running in CI (TDD-18, TDD-27) |

@@ -1,6 +1,6 @@
 import { useState, type SubmitEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { selectTasks, taskAdded } from "./tasksSlice";
+import { selectTasks, taskAdded, taskDeleted } from "./tasksSlice";
 
 const TaskList = () => {
    const tasks = useAppSelector(selectTasks);
@@ -35,7 +35,16 @@ const TaskList = () => {
 
          <ul>
             {tasks.map((task) => (
-               <li key={task.id}>{task.title}</li>
+               <li key={task.id}>
+                  {task.title}
+                  <button
+                     type="button"
+                     aria-label={`Delete ${task.title}`}
+                     onClick={() => dispatch(taskDeleted(task.id))}
+                  >
+                     Delete
+                  </button>
+               </li>
             ))}
          </ul>
       </section>

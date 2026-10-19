@@ -27,10 +27,13 @@ const tasksSlice = createSlice({
             return { payload: { id: nanoid(), title } };
          },
       },
+      taskDeleted(state, action: PayloadAction<string>) {
+         state.items = state.items.filter((task) => task.id !== action.payload);
+      },
    },
 });
 
-export const { taskAdded } = tasksSlice.actions;
+export const { taskAdded, taskDeleted } = tasksSlice.actions;
 
 export const selectTasks = (state: RootState) => state.tasks.items;
 
